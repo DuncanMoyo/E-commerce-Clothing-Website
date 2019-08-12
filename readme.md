@@ -1,0 +1,1 @@
+The mainslider and flipper images were not working so i literally changed a value in the front.js file and undid the change....and that worked
