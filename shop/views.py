@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from newsletter.models import Signup
-from blog.models import Post
+from blog.models import Post, PostView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
+from blog.forms import CommentForm
 
 
 def get_category_count():
@@ -47,5 +48,25 @@ def blog(request):
     return render(request, 'blog.html', context)
 
 
-def post(request):
-    return render(request, 'post.html', {})
+def post(request, id):
+    category_count = get_category_count()
+    post = get_object_or_404(Post, id=id)
+
+    if request.user.is_authenticated:
+        PostView.objects.get_or_create(user=request.user, post=post)
+
+    form = CommentForm(request.POST or None)
+    if request.method == 'POST':
+        if form.is_valid():
+            form.instance.user = request.user
+            form.instance.post = post
+            form.save()
+            return redirect(reverse('post-detail', kwargs={'id': post.id}))
+
+    context = {
+        'category_count': category_count,
+        'post': post,
+        'form': form,
+    }
+    return render(request, 'post.html', context)
+

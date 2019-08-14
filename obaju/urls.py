@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', index),
     path('blog/', blog, name='post-list'),
-    path('post/', post, 'post-detail'),
+    path('post/<id>/', post, name='post-detail'),
     path('tinymce/', include('tinymce.urls')),
 ]
 

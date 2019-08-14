@@ -1,12 +1,14 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from tinymce import HTMLField
+from django.urls import reverse
 
 User = get_user_model()
 
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -17,6 +19,14 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class PostView(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey('Post', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.post.user.username
 
 
 class Post(models.Model):
@@ -34,5 +44,28 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('post-detail', kwargs={
+            'id': self.id
+        })
+
+    @property
+    def get_comments(self):
+        return self.comments.all().order_by('-timestamp')
+
+    @property
+    def comment_count(self):
+        return PostView.objects.filter(post=self).count()
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    content = models.TextField()
+    post = models.ForeignKey('POST', related_name='comments', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.username
 
 
