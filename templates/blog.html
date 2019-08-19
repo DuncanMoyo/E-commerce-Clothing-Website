@@ -27,7 +27,7 @@
                     <div class="post">
                         <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
                         <p class="author-category">
-                            By <a href="#">{{ post.author.user.username }}</a> in
+                            By <a href="#">{{ post.author.author_name }}</a> in
                             {% for cat in post.category.all %}
                             <a href="">{{ cat }}</a>
                             {% endfor %}

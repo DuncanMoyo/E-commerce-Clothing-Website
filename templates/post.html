@@ -12,7 +12,7 @@
                 <div id="blog-post" class="col-lg-9">
                     <div class="box">
                         <h1>{{ post.title }}</h1>
-                        <p class="author-date">By <a href="#">{{ post.author.user.username }}</a> | {{ post.timestamp }}</p>
+                        <p class="author-date">By <a href="#">{{ post.author.author_name }}</a> | {{ post.timestamp }}</p>
                         <div id="post-content">
                             <p>{{ post.content | safe }}</p>
                             <p><img src="{{ post.thumbnail.url }}" alt="Example blog post alt" class="img-fluid"></p>
@@ -78,7 +78,7 @@
                             </form>
                         </div>
                         {% else %}
-                        <a href="{% url 'account_login' %}" class="btn btn-primary">Login to Comment</a>
+                            <a href="{% url 'account_login' %}" class="btn btn-primary">Login to Comment</a>
                         {% endif %}
                         <!-- /#comment-form-->
                     </div>

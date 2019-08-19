@@ -8,6 +8,7 @@ User = get_user_model()
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    author_name = models.CharField(max_length=30, blank=True)  # trying to return the name of the individual instead of their status
     profile_picture = models.ImageField(blank=True, null=True)
 
     def __str__(self):
@@ -26,7 +27,7 @@ class PostView(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.post.user.username
+        return self.post
 
 
 class Post(models.Model):
@@ -50,6 +51,16 @@ class Post(models.Model):
             'id': self.id
         })
 
+    def get_update_url(self):
+        return reverse('post-update', kwargs={
+            'id': self.id
+        })
+
+    def get_delete_url(self):
+        return reverse('post-delete', kwargs={
+            'id': self.id
+        })
+
     @property
     def get_comments(self):
         return self.comments.all().order_by('-timestamp')
@@ -64,8 +75,17 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
     post = models.ForeignKey('POST', related_name='comments', on_delete=models.CASCADE)
+    # reply to comments
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='replies', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.user.username
+
+    # class Meta:
+    #     # sort comments in chronological order by default
+    #     ordering = ('created',)
+    #
+    # def __str__(self):
+    #     return 'Comment by {}'.format(self.name)
 
 
