@@ -19,8 +19,7 @@
                 <div class="col-lg-9">
                     <div class="box">
                         <h1>Catalogue</h1>
-                        <p>We offer wide selection of the best products we have found and
-                            carefully selected worldwide.</p>
+                        <p>We offer wide selection of the best products we have found and carefully selected worldwide.</p>
                     </div>
                     <div class="box info-bar">
                         <div class="row">
@@ -29,16 +28,13 @@
                             </div>
                             <div class="col-md-12 col-lg-7 products-number-sort">
                                 <form class="form-inline d-block d-lg-flex justify-content-between flex-column flex-md-row">
-                                    <div class="products-number"><strong>Show</strong><a href="#"
-                                                                                         class="btn btn-sm btn-primary">12</a><a
-                                            href="#" class="btn btn-outline-secondary btn-sm">24</a><a href="#"
-                                                                                                       class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
+                                    <div class="products-number"><strong>Show</strong><a href="#" class="btn btn-sm btn-primary">12</a><a
+                                            href="#" class="btn btn-outline-secondary btn-sm">24</a><a href="#" class="btn btn-outline-secondary btn-sm">All</a><span>products</span>
                                     </div>
                                     <div class="products-sort-by mt-2 mt-lg-0"><strong>Sort by</strong>
                                         <select name="sort-by" class="form-control">
                                             <option>Price</option>
                                             <option>Name</option>
-                                            <option>Sales first</option>
                                         </select>
                                     </div>
                                 </form>
@@ -51,22 +47,22 @@
                                 <div class="product">
                                     <div class="flip-container">
                                         <div class="flipper">
-                                            <div class="front"><a href="detail.html"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
+                                            <div class="front"><a href="{{ prod.get_absolute_url }}"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
                                             </div>
-                                            <div class="back"><a href="detail.html"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
+                                            <div class="back"><a href="{{ prod.get_absolute_url }}"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
                                             </div>
                                         </div>
                                     </div>
-                                    <a href="detail.html" class="invisible"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
+                                    <a href="{{ prod.get_absolute_url }}" class="invisible"><img src="{{ prod.image.url }}" alt="" class="img-fluid"></a>
                                     <div class="text">
-                                        <h3><a href="detail.html">{{ prod.title }}</a></h3>
+                                        <h3><a href="{{ prod.get_absolute_url }}">{{ prod.title }}</a></h3>
                                         <p class="price">
                                             {% if prod.discount_price %}
-                                                <del>{{ prod.discount_price }}</del>
+                                                <del>${{ prod.discount_price }}</del>
                                             {% endif %}
-                                                {{ prod.price }}
+                                                ${{ prod.price }}
                                         </p>
-                                        <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View
+                                        <p class="buttons"><a href="{{ prod.get_absolute_url }}" class="btn btn-outline-secondary">View
                                             detail</a><a href="basket.html" class="btn btn-primary"><i
                                                 class="fa fa-shopping-cart"></i>Add to cart</a></p>
                                     </div>

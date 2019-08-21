@@ -8,7 +8,8 @@ User = get_user_model()
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    author_name = models.CharField(max_length=30, blank=True)  # trying to return the name of the individual instead of their status
+    # trying to return the name of the individual instead of their status
+    author_name = models.CharField(max_length=30, blank=True)
     profile_picture = models.ImageField(blank=True, null=True)
 
     def __str__(self):
