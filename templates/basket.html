@@ -19,11 +19,12 @@
                     <div class="box">
                         <form method="post" action="checkout1.html">
                             <h1>Shopping cart</h1>
-                            <p class="text-muted">You currently have 3 item(s) in your cart.</p>
+<!--                            <p class="text-muted">You currently have 3 item(s) in your cart.</p>-->
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th colspan="2">Product</th>
                                         <th>Quantity</th>
                                         <th>Unit price</th>
@@ -32,49 +33,62 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td><a href="#"><img src="{% static 'img/detailsquare.jpg' %}"
-                                                             alt="White Blouse Armani"></a></td>
-                                        <td><a href="#">White Blouse Armani</a></td>
-                                        <td>
-                                            <input type="number" value="2" class="form-control">
-                                        </td>
-                                        <td>$123.00</td>
-                                        <td>$0.00</td>
-                                        <td>$246.00</td>
-                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><a href="#"><img src="{% static 'img/basketsquare.jpg' %}"
-                                                             alt="Black Blouse Armani"></a></td>
-                                        <td><a href="#">Black Blouse Armani</a></td>
-                                        <td>
-                                            <input type="number" value="1" class="form-control">
-                                        </td>
-                                        <td>$200.00</td>
-                                        <td>$0.00</td>
-                                        <td>$200.00</td>
-                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                    </tr>
+                                    {% for product_item in product.items.all %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td><a href="#"><img src="{{ product_item.item.image.url }}" alt=""></a></td>
+                                            <td><a href="#">{{ product_item.item.title }}</a></td>
+                                            <td>
+                                                  <a href="{% url 'shop:remove-single-item-from-cart' product_item.item.slug %}">
+                                                    <i class="fa fa-minus" aria-hidden="true"></i>
+
+                                                </a>
+                                                {{ product_item.quantity }}
+                                                <a href="{% url 'shop:add-to-cart' product_item.item.slug %}">
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>
+
+                                                </a>
+                                            </td>
+                                            <td>${{ product_item.item.price }}</td>
+                                            <td>${{product_item.get_amount_saved}}</td>
+                                            {% if product_item.discount_price %}
+                                                <td>${{ product_item.get_amount_saved }}</td>
+                                            {% else %}
+                                                <td>${{ product_item.get_total_item_price }}</td>
+                                            {% endif %}
+                                            <td><a href="{% url 'shop:remove-from-cart' product_item.item.slug %}"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5">Your cart is empty</td>
+                                        </tr>
+                                    {% endfor %}
                                     </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <th colspan="5">Total</th>
-                                        <th colspan="2">$446.00</th>
-                                    </tr>
-                                    </tfoot>
+                                        <tfoot>
+                                            {% if product.coupon %}
+                                                <tr>
+                                                    <td colspan="4"><b>Coupon</b></td>
+                                                    <td><b>-${{ product.coupon.amount }}</b></td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if product.get_total %}
+                                                <tr>
+                                                    <th colspan="6">Total</th>
+                                                    <th colspan="2">${{ product.get_total }}</th>
+                                                </tr>
+                                            {% endif %}
+                                        </tfoot>
                                 </table>
                             </div>
                             <!-- /.table-responsive-->
                             <div class="box-footer d-flex justify-content-between flex-column flex-lg-row">
-                                <div class="left"><a href="category.html" class="btn btn-outline-secondary"><i
-                                        class="fa fa-chevron-left"></i> Continue shopping</a></div>
-                                <div class="right">
-                                    <button class="btn btn-outline-secondary"><i class="fa fa-refresh"></i> Update cart
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">Proceed to checkout <i
-                                            class="fa fa-chevron-right"></i></button>
+                                <div class="left"><a href="{% url 'shop:category' %}" class="btn btn-outline-secondary">
+                                    <i class="fa fa-chevron-left"></i> Continue shopping</a>
                                 </div>
+                                 <div class="right"><a href="/checkout/" class="btn btn-primary"><i
+                                        class="fa fa-chevron-right"></i> Proceed to checkout</a></div>
+
+
                             </div>
                         </form>
                     </div>
@@ -89,16 +103,13 @@
                             <div class="product same-height">
                                 <div class="flip-container">
                                     <div class="flipper">
-                                        <div class="front"><a href="detail.html"><img
-                                                src="{% static 'img/product2.jpg' %}" alt="" class="img-fluid"></a>
+                                        <div class="front"><a href="detail.html"><img src="{% static 'img/product2.jpg' %}" alt="" class="img-fluid"></a>
                                         </div>
-                                        <div class="back"><a href="detail.html"><img
-                                                src="{% static 'img/product2_2.jpg' %}" alt="" class="img-fluid"></a>
+                                        <div class="back"><a href="detail.html"><img src="{% static 'img/product2_2.jpg' %}" alt="" class="img-fluid"></a>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="detail.html" class="invisible"><img src="{% static 'img/product2.jpg' %}"
-                                                                             alt="" class="img-fluid"></a>
+                                <a href="detail.html" class="invisible"><img src="{% static 'img/product2.jpg' %}" alt="" class="img-fluid"></a>
                                 <div class="text">
                                     <h3>Fur coat</h3>
                                     <p class="price">$143</p>
@@ -110,16 +121,13 @@
                             <div class="product same-height">
                                 <div class="flip-container">
                                     <div class="flipper">
-                                        <div class="front"><a href="detail.html"><img
-                                                src="{% static 'img/product1.jpg' %}" alt="" class="img-fluid"></a>
+                                        <div class="front"><a href="detail.html"><img src="{% static 'img/product1.jpg' %}" alt="" class="img-fluid"></a>
                                         </div>
-                                        <div class="back"><a href="detail.html"><img
-                                                src="{% static 'img/product1_2.jpg' %}" alt="" class="img-fluid"></a>
+                                        <div class="back"><a href="detail.html"><img src="{% static 'img/product1_2.jpg' %}" alt="" class="img-fluid"></a>
                                         </div>
                                     </div>
                                 </div>
-                                <a href="detail.html" class="invisible"><img src="{% static 'img/product1.jpg' %}"
-                                                                             alt="" class="img-fluid"></a>
+                                <a href="detail.html" class="invisible"><img src="{% static 'img/product1.jpg' %}" alt="" class="img-fluid"></a>
                                 <div class="text">
                                     <h3>Fur coat</h3>
                                     <p class="price">$143</p>
@@ -131,14 +139,11 @@
                             <div class="product same-height">
                                 <div class="flip-container">
                                     <div class="flipper">
-                                        <div class="front"><a href="detail.html"><img src="img/product3.jpg" alt=""
-                                                                                      class="img-fluid"></a></div>
-                                        <div class="back"><a href="detail.html"><img src="img/product3_2.jpg" alt=""
-                                                                                     class="img-fluid"></a></div>
+                                        <div class="front"><a href="detail.html"><img src="{% static 'img/product3.jpg' %}" alt="" class="img-fluid"></a></div>
+                                        <div class="back"><a href="detail.html"><img src="{% static 'img/product3_2.jpg' %}" alt="" class="img-fluid"></a></div>
                                     </div>
                                 </div>
-                                <a href="detail.html" class="invisible"><img src="img/product3.jpg" alt=""
-                                                                             class="img-fluid"></a>
+                                <a href="detail.html" class="invisible"><img src="{% static 'img/product3.jpg' %}" alt="" class="img-fluid"></a>
                                 <div class="text">
                                     <h3>Fur coat</h3>
                                     <p class="price">$143</p>
