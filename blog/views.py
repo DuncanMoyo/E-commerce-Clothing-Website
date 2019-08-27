@@ -4,6 +4,7 @@ from blog.models import Post, PostView, Author
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models import Count
 from blog.forms import CommentForm, PostForm
+from shop.models import Item
 
 
 def get_author(user):
@@ -23,6 +24,7 @@ def get_category_count():
 
 def index(request):
     latest = Post.objects.order_by('-timestamp')[:2]
+    latest_items = Item.objects.order_by('timestamp')[:5]
 
     if request.method == 'POST':
         email = request.POST['email']
@@ -31,7 +33,8 @@ def index(request):
         new_signup.save()
 
     context = {
-        'latest': latest
+        'latest': latest,
+        'latest_items': latest_items,
     }
 
     return render(request, 'index.html', context)

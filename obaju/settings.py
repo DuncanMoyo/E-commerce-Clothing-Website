@@ -20,7 +20,16 @@ INSTALLED_APPS = [
     'newsletter',
     'blog',
     'tinymce',
+    'django_countries',
+    'crispy_forms',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -120,3 +129,15 @@ TINYMCE_DEFAULT_CONFIG = {
     'menubar': True,
     'statusbar': True,
     }
+
+STRIPE_PUBLIC_KEY = 'pk_test_tx8uE8Va8yN3YmRlRZ0fZULC00RLAevl8q'
+STRIPE_SECRET_KEY = 'sk_test_M6hBTe1EWdJqZplNq23kn54Q00HcSnrNNZ'
+
+# Auth
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend'
+)
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'

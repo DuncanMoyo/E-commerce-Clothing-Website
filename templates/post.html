@@ -14,9 +14,10 @@
                         <h1>{{ post.title }}</h1>
                         <p class="author-date">By <a href="#">{{ post.author.author_name }}</a> | {{ post.timestamp }}</p>
                         <div id="post-content">
-                            <p>{{ post.content | safe }}</p>
                             <p><img src="{{ post.thumbnail.url }}" alt="Example blog post alt" class="img-fluid"></p>
+                             <p>{{ post.content | safe }}</p>
                         </div>
+                        <br/>
                         <!-- /#post-content-->
                         <div id="comments">
                             <h4>Comments ({{ post.comments.count }})</h4>

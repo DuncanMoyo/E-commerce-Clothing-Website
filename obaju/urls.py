@@ -14,6 +14,7 @@ urlpatterns = [
     path('create/', post_create, name='post-create'),
     path('tinymce/', include('tinymce.urls')),
     path('', include('shop.urls', namespace='shop')),
+    path('accounts/', include('allauth.urls')),
 ]
 
 if settings.DEBUG:

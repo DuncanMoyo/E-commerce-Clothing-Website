@@ -26,9 +26,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th colspan="2">Product</th>
-                                        <th>Quantity</th>
                                         <th>Unit price</th>
-                                        <th>Discount</th>
+                                        <th>Quantity</th>
                                         <th colspan="2">Total</th>
                                     </tr>
                                     </thead>
@@ -38,25 +37,28 @@
                                             <td>{{ forloop.counter }}</td>
                                             <td><a href="#"><img src="{{ product_item.item.image.url }}" alt=""></a></td>
                                             <td><a href="#">{{ product_item.item.title }}</a></td>
+                                            <td>${{ product_item.item.price }}</td>
+
                                             <td>
                                                   <a href="{% url 'shop:remove-single-item-from-cart' product_item.item.slug %}">
                                                     <i class="fa fa-minus" aria-hidden="true"></i>
-
-                                                </a>
-                                                {{ product_item.quantity }}
-                                                <a href="{% url 'shop:add-to-cart' product_item.item.slug %}">
+                                                  </a>
+                                                    {{ product_item.quantity }}
+                                                  <a href="{% url 'shop:add-to-cart' product_item.item.slug %}">
                                                     <i class="fa fa-plus" aria-hidden="true"></i>
-
-                                                </a>
+                                                  </a>
                                             </td>
-                                            <td>${{ product_item.item.price }}</td>
-                                            <td>${{product_item.get_amount_saved}}</td>
-                                            {% if product_item.discount_price %}
-                                                <td>${{ product_item.get_amount_saved }}</td>
-                                            {% else %}
-                                                <td>${{ product_item.get_total_item_price }}</td>
-                                            {% endif %}
-                                            <td><a href="{% url 'shop:remove-from-cart' product_item.item.slug %}"><i class="fa fa-trash-o"></i></a></td>
+                                            <td>
+                                                 {% if product_item.item.discount_price %}
+                                                    ${{ product_item.get_total_discount_item_price }}
+                                                    <span class="badge badge-primary">Saving ${{ product_item.get_amount_saved }}</span>
+                                                 {% else %}
+                                                    ${{ product_item.get_total_item_price }}
+                                                 {% endif %}
+                                            </td>
+                                            <td>
+                                                <a href="{% url 'shop:remove-from-cart' product_item.item.slug %}"><i class="fa fa-trash-o"></i></a>
+                                            </td>
                                         </tr>
                                         {% empty %}
                                         <tr>
@@ -68,15 +70,15 @@
                                             {% if product.coupon %}
                                                 <tr>
                                                     <td colspan="4"><b>Coupon</b></td>
-                                                    <td><b>-${{ product.coupon.amount }}</b></td>
+                                                    <td><b>${{ product.coupon.amount }}</b></td>
                                                 </tr>
                                             {% endif %}
-                                            {% if product.get_total %}
                                                 <tr>
+                                                    {% if product.get_total %}
                                                     <th colspan="6">Total</th>
                                                     <th colspan="2">${{ product.get_total }}</th>
+                                                    {% endif %}
                                                 </tr>
-                                            {% endif %}
                                         </tfoot>
                                 </table>
                             </div>
@@ -85,10 +87,9 @@
                                 <div class="left"><a href="{% url 'shop:category' %}" class="btn btn-outline-secondary">
                                     <i class="fa fa-chevron-left"></i> Continue shopping</a>
                                 </div>
-                                 <div class="right"><a href="/checkout/" class="btn btn-primary"><i
-                                        class="fa fa-chevron-right"></i> Proceed to checkout</a></div>
-
-
+                                 <div class="right"><a href="/checkout1/" class="btn btn-primary"><i
+                                        class="fa fa-chevron-right"></i> Proceed to checkout</a>
+                                 </div>
                             </div>
                         </form>
                     </div>
